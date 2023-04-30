@@ -1,4 +1,4 @@
-package todolist
+package domain
 
 import (
 	"reflect"

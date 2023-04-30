@@ -7,11 +7,11 @@ import (
 
 	_ "embed"
 
-	"github.com/backpaper0/todolist"
+	"github.com/backpaper0/todolist/domain"
 )
 
 type Web struct {
-	repos   *todolist.Todolist
+	repos   *domain.Todolist
 	Handler *http.ServeMux
 }
 
@@ -26,7 +26,7 @@ func init() {
 
 func NewWeb() *Web {
 	web := &Web{
-		repos: todolist.New(),
+		repos: domain.New(),
 	}
 	handler := http.NewServeMux()
 	handler.HandleFunc("/", web.GetAll)
