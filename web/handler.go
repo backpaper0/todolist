@@ -55,8 +55,10 @@ func (web *Web) Add(rw http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	task := req.Form["task"]
 	if len(task) == 0 {
-		//TODO エラー
-		rw.WriteHeader(400)
+		data := make(map[string]interface{})
+		data["ErrorMessage"] = "タスクを入力してください。"
+		data["List"] = web.repos.GetAll()
+		tmpl.Execute(rw, data)
 		return
 	}
 	web.repos.Add(task[0])
@@ -73,14 +75,19 @@ func (web *Web) Update(rw http.ResponseWriter, req *http.Request) {
 	ids := req.Form["id"]
 	dones := req.Form["done"]
 	if len(ids) == 0 || len(dones) == 0 {
-		//TODO エラー
-		rw.WriteHeader(400)
+		data := make(map[string]interface{})
+		data["ErrorMessage"] = "不正な入力値です。"
+		data["List"] = web.repos.GetAll()
+		tmpl.Execute(rw, data)
 		return
 	}
 	id := ids[0]
 	done, err := strconv.ParseBool(dones[0])
 	if err != nil {
-		rw.WriteHeader(400)
+		data := make(map[string]interface{})
+		data["ErrorMessage"] = "不正な入力値です。"
+		data["List"] = web.repos.GetAll()
+		tmpl.Execute(rw, data)
 		return
 	}
 	web.repos.Update(id, done)

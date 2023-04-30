@@ -6,6 +6,7 @@
 <title>TODOリスト</title>
 </head>
 <body>
+{{if .ErrorMessage}}<p>{{.ErrorMessage}}</p>{{end}}
 <form method="POST" action="/add">
 	<p>
 		<input type="text" name="task" autofocus>

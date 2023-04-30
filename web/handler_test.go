@@ -24,6 +24,21 @@ func TestIndex(t *testing.T) {
 	}
 }
 
+func TestIndexMethodNotAllowed(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	form := url.Values{}
+	resp, _ := client.PostForm(server.URL, form)
+
+	if resp.StatusCode != 405 {
+		t.Errorf(resp.Status)
+	}
+}
+
 func TestAdd(t *testing.T) {
 	w := NewWeb()
 	server := httptest.NewServer(w.Handler)
@@ -38,6 +53,37 @@ func TestAdd(t *testing.T) {
 	bs, _ := io.ReadAll(resp.Body)
 	s := string(bs)
 	if !strings.Contains(s, "タスク1") {
+		t.Error(s)
+	}
+}
+
+func TestAddMethodNotAllowed(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	resp, _ := client.Get(server.URL + "/add")
+
+	if resp.StatusCode != 405 {
+		t.Errorf(resp.Status)
+	}
+}
+
+func TestAddBadRequest(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	form := url.Values{}
+	resp, _ := client.PostForm(server.URL+"/add", form)
+
+	bs, _ := io.ReadAll(resp.Body)
+	s := string(bs)
+	if !strings.Contains(s, "タスクを入力してください。") {
 		t.Error(s)
 	}
 }
@@ -77,6 +123,86 @@ func TestUpdate(t *testing.T) {
 	s = string(bs)
 	if !strings.Contains(s, "タスク1") || !strings.Contains(s, "完了") {
 		t.Error(s)
+	}
+}
+
+func TestUpdateMissingId(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	form := url.Values{}
+	form.Add("task", "タスク1")
+	client.PostForm(server.URL+"/add", form)
+
+	form = url.Values{}
+	// form.Add("id", "1")
+	form.Add("done", "true")
+	resp, _ := client.PostForm(server.URL+"/update", form)
+	bs, _ := io.ReadAll(resp.Body)
+	s := string(bs)
+	if !strings.Contains(s, "不正な入力値です。") {
+		t.Error(s)
+	}
+}
+
+func TestUpdateMissingDone(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	form := url.Values{}
+	form.Add("task", "タスク1")
+	client.PostForm(server.URL+"/add", form)
+
+	form = url.Values{}
+	form.Add("id", "1")
+	// form.Add("done", "true")
+	resp, _ := client.PostForm(server.URL+"/update", form)
+	bs, _ := io.ReadAll(resp.Body)
+	s := string(bs)
+	if !strings.Contains(s, "不正な入力値です。") {
+		t.Error(s)
+	}
+}
+
+func TestUpdateDoneIsNotBool(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	form := url.Values{}
+	form.Add("task", "タスク1")
+	client.PostForm(server.URL+"/add", form)
+
+	form = url.Values{}
+	form.Add("id", "1")
+	form.Add("done", "boolでない値")
+	resp, _ := client.PostForm(server.URL+"/update", form)
+	bs, _ := io.ReadAll(resp.Body)
+	s := string(bs)
+	if !strings.Contains(s, "不正な入力値です。") {
+		t.Error(s)
+	}
+}
+
+func TestUpdateMethodNotAllowed(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	resp, _ := client.Get(server.URL + "/update")
+
+	if resp.StatusCode != 405 {
+		t.Error(resp.Status)
 	}
 }
 
@@ -120,5 +246,19 @@ func TestClearAllDone(t *testing.T) {
 		strings.Contains(s, "タスク3") ||
 		!strings.Contains(s, "タスク4") {
 		t.Error(s)
+	}
+}
+
+func TestClearAllDoneMethodNotAllowed(t *testing.T) {
+	w := NewWeb()
+	server := httptest.NewServer(w.Handler)
+	defer server.Close()
+
+	client := server.Client()
+
+	resp, _ := client.Get(server.URL + "/clearAllDone")
+
+	if resp.StatusCode != 405 {
+		t.Error(resp.Status)
 	}
 }
