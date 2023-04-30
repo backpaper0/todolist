@@ -2,6 +2,13 @@ package domain
 
 import "strconv"
 
+type Todolist interface {
+	Add(task string)
+	GetAll() []Todo
+	Update(id string, done bool)
+	ClearAllDone()
+}
+
 type InMemoryTodolist struct {
 	value []*Todo
 }
@@ -12,7 +19,7 @@ type Todo struct {
 	Done bool
 }
 
-func NewTodolist() *InMemoryTodolist {
+func NewTodolist() Todolist {
 	todolist := &InMemoryTodolist{}
 	todolist.value = make([]*Todo, 0)
 	return todolist

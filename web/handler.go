@@ -11,7 +11,7 @@ import (
 )
 
 type Web struct {
-	repos   *domain.InMemoryTodolist
+	repos   domain.Todolist
 	Handler *http.ServeMux
 }
 
@@ -24,9 +24,9 @@ func init() {
 	tmpl = template.Must(template.New("index").Parse(htmlSource))
 }
 
-func NewWeb() *Web {
+func NewWeb(repos domain.Todolist) *Web {
 	web := &Web{
-		repos: domain.NewTodolist(),
+		repos: repos,
 	}
 	handler := http.NewServeMux()
 	handler.HandleFunc("/", web.GetAll)

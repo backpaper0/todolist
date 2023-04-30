@@ -3,11 +3,13 @@ package main
 import (
 	"net/http"
 
+	"github.com/backpaper0/todolist/domain"
 	"github.com/backpaper0/todolist/web"
 )
 
 func main() {
-	w := web.NewWeb()
+	repos := domain.NewTodolist()
+	w := web.NewWeb(repos)
 	server := &http.Server{
 		Handler: w.Handler,
 		Addr:    ":8080",

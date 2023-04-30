@@ -6,10 +6,13 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/backpaper0/todolist/domain"
 )
 
 func TestIndex(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -25,7 +28,8 @@ func TestIndex(t *testing.T) {
 }
 
 func TestIndexMethodNotAllowed(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -40,7 +44,8 @@ func TestIndexMethodNotAllowed(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -58,7 +63,8 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAddMethodNotAllowed(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -72,7 +78,8 @@ func TestAddMethodNotAllowed(t *testing.T) {
 }
 
 func TestAddBadRequest(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -89,7 +96,8 @@ func TestAddBadRequest(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -127,7 +135,8 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestUpdateMissingId(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -149,7 +158,8 @@ func TestUpdateMissingId(t *testing.T) {
 }
 
 func TestUpdateMissingDone(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -171,7 +181,8 @@ func TestUpdateMissingDone(t *testing.T) {
 }
 
 func TestUpdateDoneIsNotBool(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -193,7 +204,8 @@ func TestUpdateDoneIsNotBool(t *testing.T) {
 }
 
 func TestUpdateMethodNotAllowed(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -207,7 +219,8 @@ func TestUpdateMethodNotAllowed(t *testing.T) {
 }
 
 func TestClearAllDone(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
@@ -250,7 +263,8 @@ func TestClearAllDone(t *testing.T) {
 }
 
 func TestClearAllDoneMethodNotAllowed(t *testing.T) {
-	w := NewWeb()
+	repos := domain.NewTodolist()
+	w := NewWeb(repos)
 	server := httptest.NewServer(w.Handler)
 	defer server.Close()
 
