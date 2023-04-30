@@ -11,7 +11,7 @@ import (
 )
 
 type Web struct {
-	repos   *domain.Todolist
+	repos   *domain.InMemoryTodolist
 	Handler *http.ServeMux
 }
 

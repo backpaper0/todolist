@@ -2,7 +2,7 @@ package domain
 
 import "strconv"
 
-type Todolist struct {
+type InMemoryTodolist struct {
 	value []*Todo
 }
 
@@ -12,19 +12,19 @@ type Todo struct {
 	Done bool
 }
 
-func NewTodolist() *Todolist {
-	todolist := &Todolist{}
+func NewTodolist() *InMemoryTodolist {
+	todolist := &InMemoryTodolist{}
 	todolist.value = make([]*Todo, 0)
 	return todolist
 }
 
-func (todolist *Todolist) Add(task string) {
+func (todolist *InMemoryTodolist) Add(task string) {
 	id := strconv.Itoa(len(todolist.value) + 1)
 	todo := &Todo{id, task, false}
 	todolist.value = append(todolist.value, todo)
 }
 
-func (todolist *Todolist) GetAll() []Todo {
+func (todolist *InMemoryTodolist) GetAll() []Todo {
 	list := make([]Todo, 0, len(todolist.value))
 	for _, todo := range todolist.value {
 		list = append(list, *todo)
@@ -32,7 +32,7 @@ func (todolist *Todolist) GetAll() []Todo {
 	return list
 }
 
-func (todolist *Todolist) Update(id string, done bool) {
+func (todolist *InMemoryTodolist) Update(id string, done bool) {
 	for _, todo := range todolist.value {
 		if todo.Id == id {
 			todo.Done = done
@@ -40,7 +40,7 @@ func (todolist *Todolist) Update(id string, done bool) {
 	}
 }
 
-func (todolist *Todolist) ClearAllDone() {
+func (todolist *InMemoryTodolist) ClearAllDone() {
 	list := make([]*Todo, 0)
 	for _, todo := range todolist.value {
 		if !todo.Done {
