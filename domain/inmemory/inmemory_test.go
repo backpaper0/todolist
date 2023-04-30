@@ -15,8 +15,8 @@ func TestAddAndGetAll(t *testing.T) {
 
 	actual := todolist.GetAll()
 	expected := []domain.Todo{
-		{"1", "あれをやる", false},
-		{"2", "これをやる", false},
+		{Id: "1", Task: "あれをやる", Done: false},
+		{Id: "2", Task: "これをやる", Done: false},
 	}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("Expected is %v but actual is %v", expected, actual)
@@ -34,8 +34,8 @@ func TestUpdate(t *testing.T) {
 
 	actual := todolist.GetAll()
 	expected := []domain.Todo{
-		{"1", "あれをやる", true},
-		{"2", "これをやる", true},
+		{Id: "1", Task: "あれをやる", Done: true},
+		{Id: "2", Task: "これをやる", Done: true},
 	}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("Expected is %v but actual is %v", expected, actual)
@@ -57,8 +57,8 @@ func TestClearAllDone(t *testing.T) {
 
 	actual := todolist.GetAll()
 	expected := []domain.Todo{
-		{"1", "あれをやる", false},
-		{"3", "それをやる", false},
+		{Id: "1", Task: "あれをやる", Done: false},
+		{Id: "3", Task: "それをやる", Done: false},
 	}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("Expected is %v but actual is %v", expected, actual)
