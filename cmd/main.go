@@ -7,11 +7,13 @@ import (
 )
 
 func main() {
+	w := web.NewWeb()
+
 	handler := http.NewServeMux()
-	handler.HandleFunc("/", web.GetAll)
-	handler.HandleFunc("/add", web.Add)
-	handler.HandleFunc("/update", web.Update)
-	handler.HandleFunc("/clearAllDone", web.ClearAllDone)
+	handler.HandleFunc("/", w.GetAll)
+	handler.HandleFunc("/add", w.Add)
+	handler.HandleFunc("/update", w.Update)
+	handler.HandleFunc("/clearAllDone", w.ClearAllDone)
 
 	server := &http.Server{
 		Handler: handler,
