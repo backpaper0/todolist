@@ -5,63 +5,54 @@ import (
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
-	todolist = make([]*Todo, 0)
+func TestAddAndGetAll(t *testing.T) {
+	todolist := New()
 
-	Add("あれをやる")
+	todolist.Add("あれをやる")
+	todolist.Add("これをやる")
 
-	todo := todolist[len(todolist)-1]
-	if todo.Task != "あれをやる" || todo.Done != false {
-		t.Fail()
-	}
-}
-
-func TestGetAll(t *testing.T) {
-	todolist = []*Todo{
+	actual := todolist.GetAll()
+	expected := []Todo{
 		{"1", "あれをやる", false},
-		{"2", "これをやる", true},
-	}
-
-	actual := GetAll()
-	expected := []*Todo{
-		{"1", "あれをやる", false},
-		{"2", "これをやる", true},
+		{"2", "これをやる", false},
 	}
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fail()
+		t.Errorf("Expected is %v but actual is %v", expected, actual)
 	}
 }
 
 func TestUpdate(t *testing.T) {
-	todolist = []*Todo{
-		{"1", "あれをやる", false},
+	todolist := New()
+
+	todolist.Add("あれをやる")
+	todolist.Add("これをやる")
+
+	todolist.Update("1", true)
+	todolist.Update("2", true)
+
+	actual := todolist.GetAll()
+	expected := []Todo{
+		{"1", "あれをやる", true},
 		{"2", "これをやる", true},
 	}
-
-	Update("1", true)
-	Update("2", false)
-
-	expected := []*Todo{
-		{"1", "あれをやる", true},
-		{"2", "これをやる", false},
-	}
-	if !reflect.DeepEqual(todolist, expected) {
-		t.Fail()
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("Expected is %v but actual is %v", expected, actual)
 	}
 }
 
 func TestDelete(t *testing.T) {
-	todolist = []*Todo{
-		{"1", "あれをやる", false},
-		{"2", "これをやる", true},
-	}
+	todolist := New()
 
-	Delete("2")
+	todolist.Add("あれをやる")
+	todolist.Add("これをやる")
 
-	expected := []*Todo{
+	todolist.Delete("2")
+
+	actual := todolist.GetAll()
+	expected := []Todo{
 		{"1", "あれをやる", false},
 	}
-	if !reflect.DeepEqual(todolist, expected) {
-		t.Fail()
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("Expected is %v but actual is %v", expected, actual)
 	}
 }
