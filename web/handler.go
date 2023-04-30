@@ -26,7 +26,7 @@ func init() {
 
 func NewWeb() *Web {
 	web := &Web{
-		repos: domain.New(),
+		repos: domain.NewTodolist(),
 	}
 	handler := http.NewServeMux()
 	handler.HandleFunc("/", web.GetAll)

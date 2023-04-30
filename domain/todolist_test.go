@@ -6,7 +6,7 @@ import (
 )
 
 func TestAddAndGetAll(t *testing.T) {
-	todolist := New()
+	todolist := NewTodolist()
 
 	todolist.Add("あれをやる")
 	todolist.Add("これをやる")
@@ -22,7 +22,7 @@ func TestAddAndGetAll(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	todolist := New()
+	todolist := NewTodolist()
 
 	todolist.Add("あれをやる")
 	todolist.Add("これをやる")
@@ -41,7 +41,7 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestClearAllDone(t *testing.T) {
-	todolist := New()
+	todolist := NewTodolist()
 
 	todolist.Add("あれをやる")
 	todolist.Add("これをやる")

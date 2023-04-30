@@ -12,7 +12,7 @@ type Todo struct {
 	Done bool
 }
 
-func New() *Todolist {
+func NewTodolist() *Todolist {
 	todolist := &Todolist{}
 	todolist.value = make([]*Todo, 0)
 	return todolist
