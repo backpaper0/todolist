@@ -40,10 +40,10 @@ func (todolist *Todolist) Update(id string, done bool) {
 	}
 }
 
-func (todolist *Todolist) Delete(id string) {
+func (todolist *Todolist) ClearAllDone() {
 	list := make([]*Todo, 0)
 	for _, todo := range todolist.value {
-		if todo.Id != id {
+		if !todo.Done {
 			list = append(list, todo)
 		}
 	}

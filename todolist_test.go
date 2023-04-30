@@ -40,17 +40,23 @@ func TestUpdate(t *testing.T) {
 	}
 }
 
-func TestDelete(t *testing.T) {
+func TestClearAllDone(t *testing.T) {
 	todolist := New()
 
 	todolist.Add("あれをやる")
 	todolist.Add("これをやる")
+	todolist.Add("それをやる")
+	todolist.Add("どれをやる")
 
-	todolist.Delete("2")
+	todolist.Update("2", true)
+	todolist.Update("4", true)
+
+	todolist.ClearAllDone()
 
 	actual := todolist.GetAll()
 	expected := []Todo{
 		{"1", "あれをやる", false},
+		{"3", "それをやる", false},
 	}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("Expected is %v but actual is %v", expected, actual)
