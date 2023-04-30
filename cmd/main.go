@@ -3,12 +3,12 @@ package main
 import (
 	"net/http"
 
-	"github.com/backpaper0/todolist/domain"
+	"github.com/backpaper0/todolist/domain/inmemory"
 	"github.com/backpaper0/todolist/web"
 )
 
 func main() {
-	repos := domain.NewTodolist()
+	repos := inmemory.NewTodolist()
 	w := web.NewWeb(repos)
 	server := &http.Server{
 		Handler: w.Handler,

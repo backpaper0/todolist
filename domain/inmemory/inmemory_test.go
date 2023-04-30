@@ -1,8 +1,10 @@
-package domain
+package inmemory
 
 import (
 	"reflect"
 	"testing"
+
+	"github.com/backpaper0/todolist/domain"
 )
 
 func TestAddAndGetAll(t *testing.T) {
@@ -12,7 +14,7 @@ func TestAddAndGetAll(t *testing.T) {
 	todolist.Add("これをやる")
 
 	actual := todolist.GetAll()
-	expected := []Todo{
+	expected := []domain.Todo{
 		{"1", "あれをやる", false},
 		{"2", "これをやる", false},
 	}
@@ -31,7 +33,7 @@ func TestUpdate(t *testing.T) {
 	todolist.Update("2", true)
 
 	actual := todolist.GetAll()
-	expected := []Todo{
+	expected := []domain.Todo{
 		{"1", "あれをやる", true},
 		{"2", "これをやる", true},
 	}
@@ -54,7 +56,7 @@ func TestClearAllDone(t *testing.T) {
 	todolist.ClearAllDone()
 
 	actual := todolist.GetAll()
-	expected := []Todo{
+	expected := []domain.Todo{
 		{"1", "あれをやる", false},
 		{"3", "それをやる", false},
 	}
