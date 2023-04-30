@@ -11,7 +11,8 @@ import (
 )
 
 type Web struct {
-	repos *todolist.Todolist
+	repos   *todolist.Todolist
+	Handler *http.ServeMux
 }
 
 var tmpl *template.Template
@@ -24,9 +25,16 @@ func init() {
 }
 
 func NewWeb() *Web {
-	return &Web{
+	web := &Web{
 		repos: todolist.New(),
 	}
+	handler := http.NewServeMux()
+	handler.HandleFunc("/", web.GetAll)
+	handler.HandleFunc("/add", web.Add)
+	handler.HandleFunc("/update", web.Update)
+	handler.HandleFunc("/clearAllDone", web.ClearAllDone)
+	web.Handler = handler
+	return web
 }
 
 func (web *Web) GetAll(rw http.ResponseWriter, req *http.Request) {
