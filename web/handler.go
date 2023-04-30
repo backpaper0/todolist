@@ -10,53 +10,54 @@ import (
 
 var repos *todolist.Todolist
 var tmpl *template.Template
+var htmlSource = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TODOリスト</title>
+</head>
+<body>
+<form method="POST" action="/add">
+	<p>
+		<input type="text" name="task" autofocus>
+		<button>登録する</button>
+	</p>
+</form>
+{{if .List}}
+	<ul>
+{{end}}
+{{range .List}}
+	<li>
+		<form method="POST" action="/update">
+			<button>{{if .Done}}戻す{{else}}完了{{end}}</button>
+			<input type="hidden" name="id" value="{{.Id}}">
+			<input type="hidden" name="done" value="{{not .Done}}">
+			{{if .Done}}<del>{{end}}
+			{{.Task}}
+			{{if .Done}}</del>{{end}}
+		</form>
+	</li>
+{{else}}
+	<p>TODOはありません。</p>
+{{end}}
+{{if .List}}
+	</ul>
+	<form method="POST" action="/clearAllDone">
+		<p>
+			<button>完了タスクをクリア</button>
+		</p>
+	</form>
+	{{end}}
+</body>
+</html>
+`
 
 func init() {
 	repos = todolist.New()
 
-	tmpl = template.Must(template.New("index").Parse(`
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>TODOリスト</title>
-	</head>
-	<body>
-	<form method="POST" action="/add">
-		<p>
-			<input type="text" name="task" autofocus>
-			<button>登録する</button>
-		</p>
-	</form>
-	{{if .List}}
-		<ul>
-	{{end}}
-	{{range .List}}
-		<li>
-			<form method="POST" action="/update">
-				<button>{{if .Done}}戻す{{else}}完了{{end}}</button>
-				<input type="hidden" name="id" value="{{.Id}}">
-				<input type="hidden" name="done" value="{{not .Done}}">
-				{{if .Done}}<del>{{end}}
-				{{.Task}}
-				{{if .Done}}</del>{{end}}
-			</form>
-		</li>
-	{{else}}
-		<p>TODOはありません。</p>
-	{{end}}
-	{{if .List}}
-		</ul>
-		<form method="POST" action="/clearAllDone">
-			<p>
-				<button>完了タスクをクリア</button>
-			</p>
-		</form>
-		{{end}}
-	</body>
-	</html>
-	`))
+	tmpl = template.Must(template.New("index").Parse(htmlSource))
 }
 
 func GetAll(rw http.ResponseWriter, req *http.Request) {
