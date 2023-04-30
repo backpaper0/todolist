@@ -1,2 +1,2 @@
-# go-example-todolist
+# TODOリスト
 
